@@ -1,8 +1,10 @@
 pipeline{
-	   agent any
-	   tools {
-	       terraform 'terraform1.3.6'
+
+	   agent {
+	   label 'terraformnode'
+	   //name of node in jenkins
 	   }
+	   
 	   stages {
 	      stage('1cloneCode'){
 		    steps{
