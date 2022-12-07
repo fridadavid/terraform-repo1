@@ -1,0 +1,46 @@
+pipeline{
+	   agent any
+	   tools {
+	       terraform 'terraform1.3.6'
+	   }
+	   stages {
+	      stage('1cloneCode'){
+		    steps{
+		        git "https://github.com/fridadavid/terraform-repo1.git" 
+		       // git branch: '*/master', credentialsId: 'gitcred', url: 'https://github.com/fridadavid/terraform-repo1.git'
+		    }
+		  }
+          stage('terraform init'){
+		     steps{
+		         //sh "terraform init"
+		         sh label: '', script: 'terraform init' 
+		     }
+		  }
+          stage('3terraform fmt'){
+		      steps{
+		          sh "terraform fmt"
+		      }
+		  }
+          stage('4terraform validate'){
+		       steps{
+		           sh "terraform validate"
+		       }
+		  }
+          stage('5terraform plan'){
+		       steps{
+		           sh "terraform plan"
+		       }
+		  }
+          stage('6create infra'){
+		        steps{
+		            sh "terraform apply --auto-approve"
+		        }
+		  }
+		  stage('6destroy infra'){
+		        steps{
+		            sh "terraform destroy --auto-approve"
+		        }
+		  }
+          
+	 }
+}
